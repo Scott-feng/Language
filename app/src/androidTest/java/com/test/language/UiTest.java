@@ -17,9 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by 90969 on 2016/10/09/0009.
@@ -31,7 +29,7 @@ public class UiTest {
     //set global variable
     ArrayList stores=new ArrayList();
     ArrayList receiver=new ArrayList();
-    Set set =new HashSet();
+//    Set set =new HashSet();
 
 
 
@@ -44,9 +42,14 @@ public class UiTest {
 
     @Test
     public void testUi() throws UiObjectNotFoundException {
+        /*
+        * this method may select the same language twice or more.After the list sliding,for example,
+        * the first time ends simplified Chinese,the second may start simplified Chinese.
+        *
+        * */
         for (int k = 81; k < 100; k++) {
             Log.d("k",String.valueOf(k));
-            //chrome is launched
+            //chrome(browser) is launched
             device.pressHome();
             try {
                 Thread.sleep(3000);
@@ -92,7 +95,7 @@ public class UiTest {
                 Click(k);
             }
 
-            //return chrome
+            //return chrome(browser)
             try {
                 device.pressRecentApps();
             } catch (RemoteException e) {
@@ -122,7 +125,7 @@ public class UiTest {
                 scroll.scrollForward();
                 getName();
             }
-        //add to ArrayList receiver
+        //add to ArrayList receiver,remove duplicate elements
         for (int i=0;i<stores.size();i++){
             if (! receiver.contains(stores.get(i))){
                 receiver.add(stores.get(i));
@@ -136,7 +139,7 @@ public class UiTest {
         }
         Log.d("receiverNum",String.valueOf(receiver.size()));
 
-        //List add to set ,remove duplicate elements
+        //List add to set ,remove duplicate elements,Set collection is unordered.
 
 //        set.addAll(stores);
 //
@@ -169,25 +172,6 @@ public class UiTest {
                 e.printStackTrace();
             }
 
-        }
-
-    }
-
-    @Test
-    public void scrollable() throws UiObjectNotFoundException{
-        List<UiObject2> uiObject2s = device.findObjects(By.res("android:id/locale"));
-        int num = uiObject2s.size();
-
-//        Log.d("num", String.valueOf(num));
-
-        String[] store = new String[num];
-        for (int i = 0; i < num; i++) {
-            store[i] = uiObject2s.get(i).getText();
-            Log.d("languageName", store[i]);
-        }
-        UiScrollable scroll = new UiScrollable(new UiSelector().className("android.widget.ListView"));
-        for (int j=0;j<100;j++) {
-            scroll.scrollIntoView(new UiSelector().text(store[j]));
         }
 
     }
